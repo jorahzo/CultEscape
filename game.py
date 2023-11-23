@@ -3,7 +3,9 @@ import pygame
 import sys
 
 
+# Class for the main game initialization and game loop
 class Game:
+    # Initializing class with its window size and border we want to use down the line.
     def __init__(self, width=800, height=600, border=20):
         pygame.init()
         self.window_size = (width, height)
@@ -20,12 +22,12 @@ class Game:
         self.screen_rectangle = self.screen.get_rect()
         self.player_rectangle = self.player_surface.get_rect(midtop=(width/2, height/8))
 
-        # Scaling
-
+    # This is the runtime game loop
     def gameloop(self):
         y_movement = (False, False)
         x_movement = (False, False)
         while True:
+            # Here we are checking for events, such as user exiting page, clicking something, etc
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -48,11 +50,16 @@ class Game:
                         x_movement = (False, False)
                     if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
                         x_movement = (False, False)
-            y_equation = -y_movement[0] + y_movement[1]
-            x_equation = -x_movement[1] + x_movement[0]
+
+            # Equations that handle any movement in x or y direction
+            x_move = -x_movement[1] + x_movement[0]
+            y_move = -y_movement[0] + y_movement[1]
+
             # All the screen updates
-            self.player_rectangle[0] += x_equation
-            self.player_rectangle[1] += y_equation
+            self.player_rectangle[0] += x_move
+            self.player_rectangle[1] += y_move
+
+            # Refreshing the screen
             pygame.draw.rect(self.screen, (105, 106, 106), self.screen_rectangle, self.border)
             pygame.draw.rect(self.screen, (37, 103, 76), (self.border, self.border,
                                                           self.screen_rectangle[2] - 2 * self.border,
@@ -61,6 +68,5 @@ class Game:
             pygame.display.flip()
             self.clock.tick(60)
 
-
-my_game = Game(1000, 600)
+my_game = Game(1000, 600)  
 my_game.gameloop()
