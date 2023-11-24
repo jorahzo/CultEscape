@@ -26,6 +26,7 @@ class Game:
     def gameloop(self):
         y_movement = (False, False)
         x_movement = (False, False)
+        user_speed = 2
         while True:
             # Here we are checking for events, such as user exiting page, clicking something, etc
             for event in pygame.event.get():
@@ -54,19 +55,35 @@ class Game:
             # Equations that handle any movement in x or y direction
             x_move = -x_movement[1] + x_movement[0]
             y_move = -y_movement[0] + y_movement[1]
-
             # All the screen updates
-            self.player_rectangle[0] += x_move
-            self.player_rectangle[1] += y_move
+            # if self.player_rectangle[0] < self.screen_rectangle[2]:
+            right_edge = self.screen_rectangle[2] - self.border
+            bottom_edge = self.screen_rectangle[3] - self.border
+            # border for x-axis gameplay
+            if self.player_rectangle.right < right_edge and self.player_rectangle.left > self.border:
+                self.player_rectangle[0] += x_move * user_speed
+            elif self.player_rectangle.right >= right_edge:
+                self.player_rectangle[0] -= 1
+            else:
+                self.player_rectangle[0] += 1
+            # border for y-axis gameplay
+            if self.player_rectangle.bottom < bottom_edge and self.player_rectangle.top > self.border:
+                self.player_rectangle[1] += y_move * user_speed
+            elif self.player_rectangle.bottom >= bottom_edge:
+                self.player_rectangle[1] -= 1
+            else:
+                self.player_rectangle[1] += 1
+
 
             # Refreshing the screen
             pygame.draw.rect(self.screen, (105, 106, 106), self.screen_rectangle, self.border)
             pygame.draw.rect(self.screen, (37, 103, 76), (self.border, self.border,
-                                                          self.screen_rectangle[2] - 2 * self.border,
-                                                          self.screen_rectangle[3] - 2 * self.border))
+                                                           self.screen_rectangle[2] - 2 * self.border,
+                                                           self.screen_rectangle[3] - 2 * self.border))
             self.screen.blit(self.player_surface, self.player_rectangle)
             pygame.display.flip()
             self.clock.tick(60)
 
-my_game = Game(1000, 600)  
+
+my_game = Game(1000, 600, 50)
 my_game.gameloop()
