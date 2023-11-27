@@ -54,7 +54,7 @@ class Game:
             bottom_edge = self.screen_rectangle[3] - self.border
 
             # border for x-axis gameplay
-            if (sprite_sheet.rect.right < right_edge and sprite_sheet.rect.left > self.border):
+            if sprite_sheet.rect.right < right_edge and sprite_sheet.rect.left > self.border:
                 sprite_sheet.rect[0] += x_move * user_speed
             elif sprite_sheet.rect.right >= right_edge:
                 sprite_sheet.rect[0] -= 1
@@ -78,7 +78,7 @@ class Game:
             pygame.display.flip()
             self.clock.tick(60)
 
-
+# main execution
 my_game = Game(1000, 600, 50)
-sprite_sheet = SpriteSheet('images/entities/cultsman-spritesheet.png', 3, my_game.screen)
+sprite_sheet = SpriteSheet('images/entities/cultsman-spritesheet.png', 5, my_game.screen)
 my_game.gameloop(sprite_sheet)
